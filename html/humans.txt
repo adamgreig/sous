@@ -6,3 +6,6 @@
   Standards: HTML5, CSS3
   Components: jQuery, Orbit, Reveal
   Software: Coda, Textmate, Git
+
+Sous Vide Kettle Control Web App by Adam Greig, Feb 2013
+adamgreig.com @adamgreig
