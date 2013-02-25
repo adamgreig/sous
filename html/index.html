@@ -21,15 +21,15 @@
   <div class="row" style="padding: 10px; text-align: center;">
     <div class="four columns">
       <div style="font-size: 1.5em; font-variant: small-caps;">Min</div>
-      <div style="font-size: 2.5em; color: #c60f13;">52.0&deg;C</div>
+      <div style="font-size: 2.5em;" id="mintemp">---</div>
     </div>
     <div class="four columns">
       <div style="font-size: 1.5em; font-variant: small-caps;">Current</div>
-      <div style="font-size: 4em; color: #5da423;">54.3&deg;C</div>
+      <div style="font-size: 4em;" id="nowtemp">---</div>
     </div>
     <div class="four columns">
       <div style="font-size: 1.5em; font-variant: small-caps;">Max</div>
-      <div style="font-size: 2.5em; color: #5da423;">55.2&deg;C</div>
+      <div style="font-size: 2.5em;" id="maxtemp">---</div>
     </div>
   </div>
 
@@ -44,20 +44,20 @@
       <div style="font-size: 1.5em; font-variant: small-caps;">
         Elapsed
       </div>
-      <div style="font-size: 3em;">00:05:45</div>
+      <div style="font-size: 3em;" id="elapsedtime">--:--:--</div>
     </div>
     <div class="six columns">
       <div style="font-size: 1.5em; font-variant: small-caps;">
         Remaining
       </div>
-      <div style="font-size: 3em;">02:24:15</div>
+      <div style="font-size: 3em;" id="remainingtime">--:--:--</div>
     </div>
   </div>
 
   <div class="row" style="padding: 10px; text-align: center;">
-    <div>Cooking <span style="color: #555;">Beef Brisket</span> at
-      <span style="color: #555;">54.5&degC</span> for
-      <span style="color: #555;">2 hours 30 minutes</span>.
+    <div>Cooking <span style="color: #555;" id="food">---</span> at
+      <span style="color: #555;" id="temp">---</span> for
+      <span style="color: #555;" id="time">---</span>.
   </div>
 
   <!-- Included JS Files (Compressed) -->
@@ -70,63 +70,10 @@
   <script src="javascripts/jquery.flot.time.js"></script>
 
   <!-- Initialise plugins -->
-  <script src="javascripts/app.js"></script>
+  <!--<script src="javascripts/app.js"></script>-->
 
   <!-- App CoffeeScript -->
-  <script src="coffeescripts/app.cs" type="text/coffeescript"></script>
-
-  <script>
-      
-      var temps = [];
-      var powers = [];
-
-      start_time = new Date().getTime();
-      for(var i = start_time; i < start_time + ((5*60)+45)*1000; i += 1000) {
-        temps.push([i - start_time, 54.5 + (1.0*Math.random() - 0.5)]);
-        powers.push([i - start_time, 2200*(0.25 + (0.02*Math.random() - 0.01))]);
-      }
-
-      temps[ 98][1] = 54.0;
-      temps[ 99][1] = 53.0; powers[ 99][1] = 0.6 * 2200;
-      temps[100][1] = 52.0; powers[100][1] = 0.7 * 2200;
-      temps[101][1] = 52.5; powers[101][1] = 0.6 * 2200;
-      temps[102][1] = 53.0; powers[102][1] = 0.6 * 2200;
-      temps[102][1] = 53.5; powers[103][1] = 0.6 * 2200;
-      temps[103][1] = 54.0; powers[104][1] = 0.3 * 2200;
-      temps[200][1] = 55.2;
-      temps[temps.length-1][1] = 54.3;
-
-      $.plot($("#flothere"),
-         [
-          {
-            data: powers, label: "Power", yaxis: 2, color: "#2ba6cb",
-            lines: {fill: true}
-          },
-          {
-            data: temps, label: "Temperature", yaxis: 1, color: "#5da423",
-            threshold: {below: 53.0, color: "#c60f13"}
-          }
-         ],
-         {
-           xaxis: {
-             mode: "time",
-             transform: function(v){return Math.pow(v, 3)}
-           },
-           yaxes: [
-             {
-               min: 50, max: 60, tickFormatter: function (v, axis) {
-                 return v.toFixed(axis.tickDecimals) + "°C";}
-             },
-             {
-               min: 0, max: 2200, position: "right",
-               tickFormatter: function (v, axis) {
-                 return v.toFixed(axis.tickDecimals) + "W";}
-             }
-           ],
-           legend: {position: 'nw'}
-         }
-      );
-  </script>
+  <script src="coffeescripts/app.coffee" type="text/coffeescript"></script>
   
 </body>
 </html>
