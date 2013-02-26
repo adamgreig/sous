@@ -31,11 +31,12 @@ class FakeSerial(object):
         return "\xFF"+struct.pack("<H", int(random.gauss(u, 0.5)/0.0625))
     def write(self, d):
         return
-serial.Serial = FakeSerial
+#serial.Serial = FakeSerial
 
 def controller(preheat=False):
     print "Opening serial port to TinyPFC..."
     ser = serial.Serial("/dev/ttyUSB0", 38400)
+    ser.write("\xFF\x00")
     while True:
         rx = ser.read(3)
         if rx[0] != "\xFF":
@@ -48,7 +49,8 @@ def controller(preheat=False):
         print "Temperature:", temp
         error = config["temp"] - temp
         print "Error:", error
-        x = int((0.1 * error) * 100)
+        k = 0.05 if preheat else 0.08
+        x = int((k * error) * 100)
         if x > 100:
             x = 100
         if x < 0:
@@ -61,7 +63,10 @@ def controller(preheat=False):
             th = threading.Thread(target=post_data, args=args)
             th.start()
         print
+        time.sleep(0.5)
         if preheat and abs(error) < 1.0:
+            ser.write("\xFF\x00")
+            ser.close()
             return
 
 if __name__ == "__main__":
