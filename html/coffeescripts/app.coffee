@@ -44,6 +44,8 @@ render = ->
     now_time = temps[temps.length - 1][0] * 1000
     elapsed = (now_time - start_time) / 1000
     remains = (config["time"] * 1000 - (now_time - start_time)) / 1000
+    if remains < 0
+        remains = 0
     elapsed_hrs = String("0"+Math.floor(elapsed / 3600)).slice(-2)
     elapsed_mns = String("0"+Math.floor((elapsed % 3600) / 60)).slice(-2)
     elapsed_scs = String("0"+Math.floor(elapsed % 60)).slice(-2)
@@ -52,7 +54,8 @@ render = ->
     remains_scs = String("0"+Math.floor(remains % 60)).slice(-2)
     $('#elapsedtime').html "#{elapsed_hrs}:#{elapsed_mns}:#{elapsed_scs}"
     $('#remainingtime').html "#{remains_hrs}:#{remains_mns}:#{remains_scs}"
-
+    if remains <= 0
+        $('#remainingtime').css('color', '#c60f13')
     render_flot()
 
 render_flot = ->
@@ -66,8 +69,7 @@ render_flot = ->
         }
     ], {
         xaxis: {
-            mode: "time",
-            transform: (v) -> Math.pow(v - temps[0][0], 3)
+            mode: "time"
         },
         yaxes: [
             {
