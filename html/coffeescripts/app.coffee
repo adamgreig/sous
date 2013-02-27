@@ -40,8 +40,8 @@ render = ->
     if temps[temps.length - 1][1] < 53.0
         $('#nowtemp').css('color', '#c60f13')
     
-    start_time = temps[0][0] * 1000
-    now_time = temps[temps.length - 1][0] * 1000
+    start_time = temps[0][0]
+    now_time = temps[temps.length - 1][0]
     elapsed = (now_time - start_time) / 1000
     remains = (config["time"] * 1000 - (now_time - start_time)) / 1000
     if remains < 0
