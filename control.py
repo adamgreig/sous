@@ -9,7 +9,7 @@ import requests
 import threading
 
 config = {"food": None, "temp": None, "time": None}
-servers = ["http://localhost:5000"]
+servers = ["http://localhost:5000", "http://sous.randomskk.net"]
 ct = {'Content-Type': 'application/json'}
 
 def post_data(data):
@@ -44,6 +44,10 @@ def controller(preheat=False):
             ser.write("\xFF\x00")
             continue
         temp = float(struct.unpack("<BH", rx)[1]) * 0.0625
+        if temp > 100.0 or temp < 1.0:
+            print "got unlikely temp {0}, ignoring".format(temp)
+            ser.write("\xFF\x00")
+            continue
         t = time.time()
         print "Time:", time.strftime("%Y-%m-%dT%H:%M:%SZ")
         print "Temperature:", temp
