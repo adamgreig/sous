@@ -23,8 +23,8 @@ get_data = ->
         new_min = Math.min.apply(Math, new_temps)
         maxt = new_max if new_max > maxt
         mint = new_min if new_min < mint
-        temps = temps.concat(([d[0]*1000, d[1] for d in data[0]))
-        powers = powers.concat((d[0]*1000, d[1] for d in data[1]))
+        temps = temps.concat(([d[0]*1000, d[1]] for d in data[0]))
+        powers = powers.concat(([d[0]*1000, d[1]] for d in data[1]))
         render()
         window.setTimeout(get_data, 500)
 
